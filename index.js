@@ -22,8 +22,8 @@ function verifyJWT(req, res, next) {
             return res.status(403).send({ message: 'Forbidden Access' })
         }
         req.decoded = decoded;
+        next();
     })
-    next();
 }
 
 
@@ -34,11 +34,18 @@ async function run() {
     try {
         await client.connect();
         const carCollection = client.db('automoto').collection('car');
+        const supplierCollection = client.db('supplier').collection('supplierInfo');
         app.get('/car', async (req, res) => {
             const query = {};
             const cursor = carCollection.find(query);
             const cars = await cursor.toArray();
             res.send(cars);
+        });
+        app.get('/supplierInfo', async (req, res) => {
+            const query = {};
+            const cursor = supplierCollection.find(query);
+            const supplierInfo = await cursor.toArray();
+            res.send(supplierInfo);
         });
         app.get('/car/:id', async (req, res) => {
             const id = req.params.id;
