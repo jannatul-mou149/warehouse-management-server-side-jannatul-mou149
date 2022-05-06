@@ -63,7 +63,6 @@ async function run() {
             const updateDoc = {
                 $set: {
                     quantity: updateCar.quantity,
-                    sold: updateCar.sold,
                 }
             };
             const result = await carCollection.updateOne(query, updateDoc, options);
